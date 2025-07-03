@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Pong HTML Game</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<label>Lag (ms):
+    <input type="range" id="lag" min="0" max="500" step="10" value="0">
+    <span id="lagValue">0</span>
+</label>
+<br>
+<label>Packet Loss (%):
+    <input type="range" id="loss" min="0" max="100" step="1" value="0">
+    <span id="lossValue">0</span>
+</label>
+
+<canvas width="750" height="585" id="game"></canvas>
+
+<script src="index.js"></script>
+
+<script>
+    const lagSlider = document.getElementById("lag");
+    const lossSlider = document.getElementById("loss");
+    const lagValue = document.getElementById("lagValue");
+    const lossValue = document.getElementById("lossValue");
+
+    function sendSettings() {
+        const settings = {
+            type: "settings",
+            lag: parseInt(lagSlider.value),
+            loss: parseInt(lossSlider.value)
+        };
+        socket.send(JSON.stringify(settings));
+    }
+
+    lagSlider.addEventListener("input", () => {
+        lagValue.textContent = lagSlider.value;
+        sendSettings();
+    });
+
+    lossSlider.addEventListener("input", () => {
+        lossValue.textContent = lossSlider.value;
+        sendSettings();
+    });
+</script>
+
+</body>
+</html>
